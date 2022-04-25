@@ -15,7 +15,7 @@ ${data_to_login}  [{"username": "string", "password": "string"}]
 
 *** Test Cases ***
 Swagger user get username Test
-    BuiltIn.Skip            "HTTPError: 404 Client Error: Not Found for url: https://petstore.swagger.io/v2/user/string"    
+#    BuiltIn.Skip            "HTTPError: 404 Client Error: Not Found for url: https://petstore.swagger.io/v2/user/string"
     ${response}=    GET      https://petstore.swagger.io/v2/user/string
     Status Should Be    OK   ${response}
 
