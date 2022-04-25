@@ -1,5 +1,6 @@
 import requests
 import api_urls
+from conftest import user_data
 from headers import HEADERS
 from json import dumps
 
@@ -15,21 +16,27 @@ def test_user_get_username(get_login, user_data):
     """Given: created user"""
     username = user_data[0]["username"]
     requests.post(url=api_urls.User.USER, headers=HEADERS, data=dumps(user_data))
-
     print("\n\t", username)
     """When: Call find user by name"""
     user = requests.get(url=api_urls.User.USERNAME + username)
     "Then: user should be found"
     assert user.status_code == 200, 'Falling'
 
-def test_user_put_username(create_user):
+def test_user_put_username(user_data, create_user):
+    """Given: created user"""
+    username = user_data[0]["username"]
+    requests.post(url=api_urls.User.USER, headers=HEADERS, data=dumps(user_data))
     """Update user"""
-    user_update = requests.put(url=api_urls.User.USERNAME, headers=HEADERS, data=dumps(create_user))
+    user_update = requests.put(url=api_urls.User.USERNAME + username, headers=HEADERS, data=dumps(create_user))
     assert user_update.status_code == 200, 'Falling'
 
-def test_user_del_username(user_data):
+
+def test_user_del_username(user_data, create_user):
+    """Given: created user"""
+    username = user_data[0]["username"]
+    requests.post(url=api_urls.User.USER, headers=HEADERS, data=dumps(user_data))
     """Delete user"""
-    user_delete = requests.delete(url=api_urls.User.USERNAME, headers=HEADERS)
+    user_delete = requests.delete(url=api_urls.User.USERNAME + username, headers=HEADERS, data=dumps(create_user))
     assert user_delete.status_code == 200, 'Falling'
 
 def test_user_login(get_login):
