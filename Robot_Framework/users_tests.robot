@@ -15,8 +15,7 @@ ${data_to_login}  [{"username": "string", "password": "string"}]
 
 *** Test Cases ***
 Swagger user get username Test
-#    BuiltIn.Skip            "HTTPError: 404 Client Error: Not Found for url: https://petstore.swagger.io/v2/user/string"
-    ${response}=    GET      https://petstore.swagger.io/v2/user/string
+    ${response}=    GET      https://petstore.swagger.io/v2/user/string      # headers= ${headers}
     Status Should Be    OK   ${response}
 
 Swagger user post createWithList Test
@@ -24,7 +23,7 @@ Swagger user post createWithList Test
     Status Should Be    OK   ${response}
 
 Swagger user put username Test
-    ${response}=    PUT      https://petstore.swagger.io/v2/user/string           data=${data}     headers=&{headers}
+    ${response}=    PUT      https://petstore.swagger.io/v2/user/string      data=${data}     headers=&{headers}
     Status Should Be    OK   ${response}
 
 Swagger user del username Test

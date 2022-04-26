@@ -2,7 +2,7 @@
 Documentation     Example using the space separated format.
 ...               Checking the information provided in the
 ...               Robot Framework documentation.
-Suite setup       Setup Pet Tests
+#Suite setup       Setup Pet Tests
 Library           RequestsLibrary
 Library           Collections
 Library           BuiltIn
@@ -11,15 +11,16 @@ Library           BuiltIn
 
 *** Variables ***
 &{headers}        Content-Type=application/json
+${petId} =  evaluate random.randint(1,10)  random
+${data_pet} =  evaluate  {"id": ${petId}, "category": {"id": ${petId}, "name": "string"}, "name": "doggie", "photoUrls": ["string"], "tags": [{"id": ${petId}, "name": "string" }], "status": "available"}
 
-
-*** Keywords ***
-Setup Pet Tests
-    ${order_id} =  evaluate  random.randint(1,5)  random
-    set suite variable    ${order_id}  ${order_id}
-    ${data_pet} =  evaluate  {"id": ${order_id}, "category": {"id": ${order_id}, "name": "string"},
-    "name": "doggie", "photoUrls": ["string"], "tags": [{"id": ${order_id}, "name": "string" }], "status": "available"}
-    set suite variable  ${data_pet}  ${data_pet}
+#*** Keywords ***
+#Setup Pet Tests
+#    ${order_id} =  evaluate  random.randint(1,5)  random
+#    set suite variable    ${order_id}  ${order_id}
+#    ${data_pet} = evaluate SEPARATOR= {"id": ${order_id}, "category": {"id": ${order_id}, "name": "string"},
+#     ... "name": "doggie", "photoUrls": ["string"], "tags": [{"id": ${order_id}, "name": "string" }], "status": "available"}
+#    set suite variable  ${data_pet}  ${data_pet}
 
 *** Test Cases ***
 Swagger add new pet Test
@@ -35,20 +36,20 @@ Swagger find pet Test
     Status Should Be    OK   ${response}
 
 Swagger find pet by id Test
-    ${response}=       GET      https://petstore.swagger.io/v2/pet/${order_id}
+    ${response}=       GET      https://petstore.swagger.io/v2/pet/${petId}
     Status Should Be    OK   ${response}
 
 Swagger update pet by form Test
-    ${response}=       POST      https://petstore.swagger.io/v2/pet/${order_id}
+    ${response}=       POST      https://petstore.swagger.io/v2/pet/${petId}
     Status Should Be    OK   ${response}
 
 Swagger delete pet Test
-    ${response}=       DELETE      https://petstore.swagger.io/v2/pet/${order_id}
+    ${response}=       DELETE      https://petstore.swagger.io/v2/pet/${petId}
     Status Should Be    OK   ${response}
 
 Swagger update image Test
     ${file} =  Get File For Streaming Upload  ./data/f2637562392edd24809a100a0211e6f8-symbols-design-logo-icon-design.jpg
     ${files} =  create dictionary  file=${file}
     ${headers} =  create dictionary  Content-Type=multipart/form-data  accept=application/json
-    ${response}=       POST      https://petstore.swagger.io/v2/pet/${order_id}/uploadImage  files=${files}
+    ${response}=       POST      https://petstore.swagger.io/v2/pet/${petId}/uploadImage  files=${files}
     Status Should Be    OK   ${response}
