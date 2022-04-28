@@ -19,6 +19,7 @@ Setup Store Tests
     set suite variable  ${data_order}  ${data_order}
 
 *** Test Cases ***
+
 Swagger store inventory Test
     ${response}=    GET      https://petstore.swagger.io/v2/store/inventory
     Status Should Be    OK   ${response}
